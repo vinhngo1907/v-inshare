@@ -8,6 +8,7 @@ const downloadhRouter = require("./routes/download")
 const fileRouter = require("./routes/files")
 const connectDB = async() => {
     try {
+        mongoose.set("strictQuery", false);
         await mongoose.connect(`${process.env.MONGODB_URI}`, {
             useNewUrlParser: true,
             useUnifiedTopology: true,
