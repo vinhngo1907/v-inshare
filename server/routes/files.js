@@ -4,6 +4,16 @@ const multer = require("multer")
 const File = require("../models/File")
 const { v4: uuidv4 } = require("uuid")
 const apiUrl = require("../contexts/constants");
+const fs = require("fs");
+
+const UPLOADS_FOLDER = path.join(__dirname, "../uploads");
+const ensureUploadsFolder = () => {
+  if (!fs.existsSync(UPLOADS_FOLDER)) {
+    fs.mkdirSync(UPLOADS_FOLDER, { recursive: true });
+  }
+};
+
+ensureUploadsFolder();
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => cb(null, 'uploads/'),
@@ -18,10 +28,12 @@ const upload = multer({
     limits: { fileSize: 1000000 * 100 } //100mb
 });
 
-// @route POST api/files/
-// @Upload a file
-// @access Public
-router.post("/", upload.single('myFile'), async(req, res) => {
+/** 
+ * @route POST api/files/
+ * @Upload a file
+ * @access Public
+ */
+router.post("/", upload.single('myFile'), async (req, res) => {
     // console.log(req.file)
 
     // const base_url = process.env.NODE_ENV !== 'production' ? 'http://localhost:3000' : 'https://mern-inshare-app.herokuapp.com';
@@ -38,7 +50,7 @@ router.post("/", upload.single('myFile'), async(req, res) => {
             uuid: uuidv4()
         })
         await newFile.save()
-            // res.json({ success: true, file: `/files/${newFile.uuid}` })
+        // res.json({ success: true, file: `/files/${newFile.uuid}` })
         res.json({
             success: true,
             file: newFile,
@@ -50,8 +62,10 @@ router.post("/", upload.single('myFile'), async(req, res) => {
         res.status(500).json({ success: false, message: "Internal server error" })
     }
 })
-
-router.get("/:uuid", async(req, res) => {
+/**
+ * 
+ */
+router.get("/:uuid", async (req, res) => {
     // console.log(req.params)
     try {
         const getFile = await File.findOne({ uuid: req.params.uuid })
@@ -76,11 +90,12 @@ router.get("/:uuid", async(req, res) => {
     }
 });
 
-// @route POST api/files/send
-// @Send file others
-// @access Public
-
-router.post("/send", async(req, res) => {
+/** 
+ * @route POST api/files/send
+ * @Send file others
+ * @access Public
+ */
+router.post("/send", async (req, res) => {
     const { uuid, fromEmail, toEmail } = req.body
     try {
         if (!uuid || !fromEmail || !toEmail) return res.status(400).json({ success: false, message: 'All fields is required.' });
@@ -93,7 +108,7 @@ router.post("/send", async(req, res) => {
             file.receiver = toEmail
         await file.save();
         const sendMail = require("../services/mailService")
-            // let app_base_url = process.env.NODE_ENV !== "production" ? process.env.APP_BASE_URL : "https://mern-share-it-app.herokuapp.com"
+        // let app_base_url = process.env.NODE_ENV !== "production" ? process.env.APP_BASE_URL : "https://mern-share-it-app.herokuapp.com"
         sendMail({
             from: fromEmail,
             to: toEmail,
@@ -105,9 +120,9 @@ router.post("/send", async(req, res) => {
                 size: parseInt(file.size / 1000) + ' KB',
                 expires: '24 hours'
             })
-        }).then(function() {
+        }).then(function () {
             return res.json({ success: true, message: "Email sent successfully" });
-        }).catch(function(err) {
+        }).catch(function (err) {
             return res.status(500).json({ error: 'Error in email sending.' });
         })
     } catch (error) {

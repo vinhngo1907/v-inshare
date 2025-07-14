@@ -331,19 +331,65 @@ section.download {
 }
 
 @media screen and (max-width: 900px) {
-     :root {
+    :root {
         --container-width: 400px;
     }
+
     .upload-container {
         flex-direction: column;
     }
+
     .image-vector {
         display: none;
     }
+
     .email-container .filed {
         flex-direction: column;
     }
+
     .email-container .filed {
         width: 300px;
     }
+}
+
+.shorten-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  margin-top: 1rem;
+}
+
+.shorten-container input {
+  flex: 1;
+  padding: 10px 15px;
+  font-size: 16px;
+  border: 2px solid var(--border-color);
+  border-radius: 6px;
+  background: #f5fcff;
+  color: #607d8b;
+}
+
+.shorten-container input:focus {
+  outline: none;
+  border-color: var(--dark-blue);
+  transition: all 0.25s;
+}
+
+.shorten-container button {
+  padding: 10px 20px;
+  font-size: 16px;
+  background: var(--main-bg-color);
+  border: none;
+  border-radius: 6px;
+  color: #607d8b;
+  cursor: pointer;
+  transition: background 0.25s ease;
+}
+
+.shorten-container button:hover {
+  background: var(--dark-blue);
+  color: #fff;
 }

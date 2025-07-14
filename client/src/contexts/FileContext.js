@@ -29,17 +29,17 @@ function FileContextProvider({ children }) {
                 })
                 return response.data
             }
-            
+
         } catch (error) {
             console.log(error)
             distpach({ type: "FILES_LOADED_FAIL" })
         }
     }
 
-    const addFile = async (myFile,onUploadProgress) => {
+    const addFile = async (myFile, onUploadProgress) => {
         try {
             const formData = new FormData()
-        formData.append('myFile',myFile);
+            formData.append('myFile', myFile);
             const response = await axios.post(`${apiUrl}/api/files`, formData, {
                 headers: {
                     "Content-Type": "multipart/form-data",
@@ -52,12 +52,24 @@ function FileContextProvider({ children }) {
                     payload: response.data.file
                 });
                 return response.data
+            } else {
+                setShowToast({
+                    show: true,
+                    type: 'danger',
+                    message: response.data.message || 'Upload failed.'
+                });
             }
-            
+
         } catch (error) {
             console.log(error)
-            return error.response.data
-                ? error.response.data : { success: false, message: "Server error" }
+            setShowToast({
+                show: true,
+                type: 'danger',
+                message: error?.response?.data?.message || 'Server error'
+            });
+            return error.response?.data
+                ? error.response.data
+                : { success: false, message: "Server error" };
         }
     }
     const sendMail = async (sendForm) => {
@@ -69,21 +81,21 @@ function FileContextProvider({ children }) {
                 })
                 return response.data
             }
-            
+
         } catch (error) {
             console.log(error)
             return error.response.data ? error.response.data : { success: false, message: "Server error" }
         }
     }
     const showFile = async (uuid) => {
-    
+
         try {
             const response = await axios.get(`${apiUrl}/api/files/${uuid}`)
             if (response.data.success) {
                 distpach({ type: SHOW_FILE, payload: response.data.file })
                 return response.data
             }
-           
+
         } catch (error) {
             distpach({ type: "FILES_LOADED_FAIL" })
             return error.response.data ? error.response.data : { success: false, message: "Server error" }
@@ -107,9 +119,9 @@ function FileContextProvider({ children }) {
             console.log(error);
         }
     }
-    
+
     const fileContextData = {
-        fileState, getFiles, downLoadFile, showFile, 
+        fileState, getFiles, downLoadFile, showFile,
         findFile,
         addFile, showAddFileModal, setShowAddFileModal,
         sendMail,
