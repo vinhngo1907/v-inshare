@@ -31,7 +31,7 @@ app.use(cors())
 app.use("/api/files", fileRouter);
 app.use("/files", downloadhRouter);
 app.use("/api/url", urlRouter)
-app.use("/slug", slugRouter)
+app.use("/", slugRouter)
 
 const PORT = process.env.PORT || 3300
 

@@ -1,8 +1,7 @@
 export const apiUrl =
     process.env.NODE_ENV !== 'production' ?
     'http://localhost:3001' :
-    'http://localhost:3001'
-    // 'https://mern-inshare-app.herokuapp.com'
+    'https://v-inshare.onrender.com'
 export const LOCAL_STORAGE_TOKEN_NAME = 'mern-shareit'
 
 export const FILES_LOADED_SUCCESS = "FILES_LOADED_SUCCESS"

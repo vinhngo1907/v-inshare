@@ -1,0 +1,14 @@
+@serverUrl = http://localhost:3001
+
+###
+
+POST {{serverUrl}}/api/url
+Content-Type: application/json
+
+{
+    "slug": "v-test",
+    "url": "http://localhost:3000/files/d2f254a8-9781-4a82-abc7-fc61b44e5ba0"
+}
+###
+
+GET {{serverUrl}}/v-file

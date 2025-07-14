@@ -72,14 +72,14 @@ A simple file upload system that generates a link which expires in **24 hours**,
 
 ```bash
 # Backend
-cd backend
+cd server
 npm install
 npm run dev
 
 # Frontend
-cd frontend
+cd client
 npm install
-npm run dev
+npm run start
 ```
 
 
